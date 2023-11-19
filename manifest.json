@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Productive Browser",
+  "version": "1.0",
+  "description": "Productive spending time on browser with adding notes, daily challanges, night review of the day and pomodoro clock.",
+  "permissions": ["activeTab", "storage"],
+  "icons": {
+    "16": "icons/productive16.png",
+    "48": "icons/productive48.png",
+    "128": "icons/productive96.png"
+  },
+  "commands": {
+    "toggle-feature": {
+      "suggested_key": {
+        "default": "Alt+N"
+      },
+      "description": "Toggle feature"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles/content.css"]
+    }
+  ]
+}
