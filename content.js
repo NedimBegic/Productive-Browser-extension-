@@ -1,4 +1,3 @@
-/* +++++++++++++++++++++++++++ Making note tracker ++++++++++++++++++++++++++++++ */
 let textarea;
 
 document.addEventListener("keydown", function (event) {
@@ -15,11 +14,14 @@ document.addEventListener("keydown", function (event) {
 
   // hide and update popup.html with notes
   if (event.ctrlKey && event.shiftKey && event.key === "Y") {
-    // store info from textarea into local storage
+    console.log("it works");
+    // store info from textarea into chrome.storage.local
     if (textarea && textarea.value.trim() !== "") {
-      const notes = JSON.parse(localStorage.getItem("notes")) || [];
-      notes.push(textarea.value);
-      localStorage.setItem("notes", JSON.stringify(notes));
+      // Send textarea.value to background.js
+      chrome.runtime.sendMessage({
+        action: "updateNotes",
+        notes: textarea.value,
+      });
     }
     textarea.remove();
     textarea = null;
