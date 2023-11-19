@@ -15,6 +15,19 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.storage.local.set({ notes: backgroundNotes }, function () {
       console.log("Notes stored in chrome.storage.local");
     });
+
+    // Retrieve existing notes array from chrome.storage.local and add the new note
+    chrome.storage.local.get({ allNotes: [] }, function (result) {
+      let allNotes = result.allNotes;
+
+      // Add the new note to the array
+      allNotes.push(request.notes);
+
+      // Store the updated notes array back in chrome.storage.local
+      chrome.storage.local.set({ allNotes: allNotes }, function () {
+        console.log("All notes stored in chrome.storage.local:", allNotes);
+      });
+    });
   }
 });
 
