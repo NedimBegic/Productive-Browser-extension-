@@ -7,8 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update the UI with the received data
     updateUI(allNotes);
   });
-  // Set up the interval to clear storage at midnight
-  clearStorageAtMidnight();
+
+  /* // Set up the interval to clear storage at midnight
+  clearStorageAtMidnight(); */
 });
 
 // Add a listener for messages from background.js
