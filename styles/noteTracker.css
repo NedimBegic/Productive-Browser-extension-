@@ -1,46 +1,44 @@
-body {
-  width: 300px;
-  padding: 15px;
-  font-family: Arial, sans-serif;
+#notesSection {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-.form-container {
-  margin-bottom: 15px;
+ul {
+  list-style-type: none;
+  padding: 0;
+  background-color: white;
+  box-shadow: 0 0 10px grey;
+  width: 95%;
+  border-radius: 5px;
+  padding: 0.5em;
 }
 
-.input-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.input-field {
-  width: 100%;
+ul > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 8px;
-  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
 }
 
-.button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  background-color: #4caf50;
+ul button {
+  background-color: red;
   color: white;
   border: none;
-  border-radius: 4px;
+  padding: 6px 12px;
   cursor: pointer;
+  border-radius: 50%;
+  opacity: 0.7;
+  transition: all 0.3s;
 }
 
-.button:hover {
-  background-color: #45a049;
+ul button:hover {
+  opacity: 1;
 }
 
-.notes-container {
-  margin-top: 20px;
-}
-
-.note {
-  margin-bottom: 10px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+#notesList li {
+  text-align: left;
+  padding-right: 0.4em;
+  font-size: 1.2em;
 }

@@ -48,7 +48,7 @@ function updateUI(allNotes) {
 
     // Create remove button
     const removeButton = document.createElement("button");
-    removeButton.textContent = "Remove";
+    removeButton.textContent = "X";
     removeButton.addEventListener("click", function () {
       // Call a function to handle note removal when the button is clicked
       removeNote(index);
@@ -82,7 +82,7 @@ function removeNote(index) {
   });
 }
 
-// Function to clear chrome.storage.local at midnight
+/* // Function to clear chrome.storage.local at midnight
 function clearStorageAtMidnight() {
   const now = new Date();
   const midnight = new Date(now);
@@ -96,4 +96,4 @@ function clearStorageAtMidnight() {
       console.log("chrome.storage.local cleared at midnight.");
     });
   }, timeUntilMidnight);
-}
+} */

@@ -3,14 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Productive browser popup</title>
+    <title>Productive Browser Popup</title>
     <link rel="stylesheet" href="styles/popup.css" />
+    <link rel="stylesheet" href="styles/noteTracker.css" />
   </head>
+
   <body>
     <div class="container">
-      <h1>My Notes</h1>
-      <ul id="notesList"></ul>
+      <header>
+        <h1>Productive Browser</h1>
+        <!-- Add your icon here -->
+        <img src="your-icon.png" alt="Icon" width="32" height="32" />
+      </header>
+
+      <nav>
+        <button id="notesBtn" class="active">Notes</button>
+        <button id="pomodoroBtn">Pomodoro</button>
+        <button id="dailyTaskBtn">Daily Task</button>
+        <button id="nightReviewBtn">Night Review</button>
+      </nav>
+
+      <section id="notesSection">
+        <h2>My Notes</h2>
+        <ul id="notesList"></ul>
+      </section>
+
+      <!-- Add sections for other functionalities (pomodoro, daily task, night review) as needed -->
     </div>
+    <script src="popup.js"></script>
   </body>
-  <script src="popup.js"></script>
 </html>
