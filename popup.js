@@ -1,3 +1,5 @@
+/* ++++++++++++++++++++++ ADD NOTES TO POPUP.HTML ++++++++++++++++++++++ */
+
 // Add a listener for the DOMContentLoaded event
 document.addEventListener("DOMContentLoaded", function () {
   // Retrieve all notes from chrome.storage.local
@@ -97,3 +99,73 @@ function clearStorageAtMidnight() {
     });
   }, timeUntilMidnight);
 } */
+
+/* ++++++++++++++++++++++++++ ADDING FUNCTIONALITY TO OPEN AND CLOSE SECTIONS IN POPUP.HTML ++++++++++++++++++ */
+// using DOMContentLoaded to be sure that the html is fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+  const notesBtn = document.getElementById("notesBtn");
+  const pomodoroBtn = document.getElementById("pomodoroBtn");
+  const dailyTaskBtn = document.getElementById("dailyTaskBtn");
+  const nightReviewBtn = document.getElementById("nightReviewBtn");
+
+  const notesSection = document.getElementById("notesSection");
+  const pomodoroSection = document.getElementById("pomodoroSection");
+  const dailyTaskSection = document.getElementById("dailyTaskSection");
+  const nightReviewSection = document.getElementById("nightReviewSection");
+
+  function showSection(sectionId) {
+    notesSection.style.display = "none";
+    pomodoroSection.style.display = "none";
+    dailyTaskSection.style.display = "none";
+    nightReviewSection.style.display = "none";
+
+    const selectedSection = document.getElementById(sectionId);
+    if (selectedSection) {
+      selectedSection.style.display = "flex";
+      selectedSection.classList.add = "sections";
+    }
+  }
+
+  notesBtn.addEventListener("click", function () {
+    showSection("notesSection");
+  });
+
+  pomodoroBtn.addEventListener("click", function () {
+    showSection("pomodoroSection");
+  });
+
+  dailyTaskBtn.addEventListener("click", function () {
+    showSection("dailyTaskSection");
+  });
+
+  nightReviewBtn.addEventListener("click", function () {
+    showSection("nightReviewSection");
+  });
+});
+
+document
+  .getElementById("notesList")
+  .addEventListener("click", function (event) {
+    const clickedElement = event.target;
+
+    if (clickedElement.tagName === "DIV") {
+      // Copy text to clipboard
+      const textToCopy = clickedElement.textContent;
+      navigator.clipboard.writeText(textToCopy).then(function () {
+        // Show the textCopy div near the cursor
+        const textCopy = document.querySelector(".textCopy");
+
+        // Set the position of the textCopy div based on the cursor coordinates
+        textCopy.style.left = event.pageX + 10 + "px";
+        textCopy.style.top = event.pageY + "px";
+
+        // Display the textCopy div
+        textCopy.style.display = "block";
+
+        // Hide the textCopy div after 0.3 seconds
+        setTimeout(function () {
+          textCopy.style.display = "none";
+        }, 1000);
+      });
+    }
+  });

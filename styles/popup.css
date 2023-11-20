@@ -8,8 +8,8 @@ body {
   height: 100%;
   width: auto;
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f2f2f2;
 }
 
 .container {
@@ -35,4 +35,37 @@ nav button:hover {
 nav button:focus {
   background-color: #2ecc71;
   transform: translateY(0.6em);
+}
+
+.sections {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  padding-left: 1.5em;
+}
+
+header h1 {
+  margin-left: 2em;
+}
+
+nav {
+  border: 1px solid white;
+  background-color: white;
+  width: 95%;
+  position: relative;
+  height: 4em;
+  border-radius: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }

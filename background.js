@@ -1,7 +1,6 @@
-// Background script to handle messages from content.js and popup.js
+/* +++++++++++++++++++++++++  FOR TRACKING NOTES ++++++++++++++++++++++++++ */
 
-let backgroundNotes = ""; // Variable to store notes received from content.js
-
+let backgroundNotes = "";
 // Add a listener for messages from content.js and popup.js
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "updateNotes") {

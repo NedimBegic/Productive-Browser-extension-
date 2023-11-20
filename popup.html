@@ -12,9 +12,10 @@
     <div class="container">
       <header>
         <h1>Productive Browser</h1>
-        <!-- Add your icon here -->
-        <img src="your-icon.png" alt="Icon" width="32" height="32" />
+        <img src="icons/productive48.png" alt="Icon" width="32" height="32" />
       </header>
+
+      <div class="textCopy">Text copied!</div>
 
       <nav>
         <button id="notesBtn" class="active">Notes</button>
@@ -23,12 +24,24 @@
         <button id="nightReviewBtn">Night Review</button>
       </nav>
 
-      <section id="notesSection">
+      <section id="notesSection" class="sections">
         <h2>My Notes</h2>
         <ul id="notesList"></ul>
       </section>
+      <section id="pomodoroSection" class="sections" style="display: none">
+        <h2>Pomodoro Timer</h2>
+        <!-- Add content for the Pomodoro section -->
+      </section>
 
-      <!-- Add sections for other functionalities (pomodoro, daily task, night review) as needed -->
+      <section id="dailyTaskSection" class="sections" style="display: none">
+        <h2>Daily Task</h2>
+        <!-- Add content for the Daily Task section -->
+      </section>
+
+      <section id="nightReviewSection" class="sections" style="display: none">
+        <h2>Night Review</h2>
+        <!-- Add content for the Night Review section -->
+      </section>
     </div>
     <script src="popup.js"></script>
   </body>
