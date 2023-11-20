@@ -1,0 +1,50 @@
+#pomodoroSection {
+  font-size: 1.3em;
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px;
+}
+
+.timer-container label {
+  margin-right: 10px;
+}
+
+.status-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px;
+}
+
+#statusDisplay {
+  margin-left: 5px;
+  color: #c4424e;
+}
+
+#saveChangesBtn,
+#forceBreakBtn {
+  margin: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: #87b5e3;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+#saveChangesBtn:hover,
+#forceBreakBtn:hover {
+  background-color: #4a90e2;
+}
+
+#saveChangesBtn:focus,
+#forceBreakBtn:focus {
+  background-color: #2c69c3;
+  transform: translateY(0.3em);
+}

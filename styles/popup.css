@@ -69,3 +69,7 @@ nav {
   align-items: center;
   justify-content: space-evenly;
 }
+
+input {
+  border: 1px solid #ccc;
+}

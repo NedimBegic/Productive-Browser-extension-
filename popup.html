@@ -6,6 +6,9 @@
     <title>Productive Browser Popup</title>
     <link rel="stylesheet" href="styles/popup.css" />
     <link rel="stylesheet" href="styles/noteTracker.css" />
+    <link rel="stylesheet" href="styles/pomodoro.css" />
+    <link rel="stylesheet" href="styles/dailyTasks.css" />
+    <link rel="stylesheet" href="styles/nightReview.css" />
   </head>
 
   <body>
@@ -24,23 +27,73 @@
         <button id="nightReviewBtn">Night Review</button>
       </nav>
 
+      <!-- NOTES -->
       <section id="notesSection" class="sections">
         <h2>My Notes</h2>
         <ul id="notesList"></ul>
       </section>
+
+      <!-- POMODORO -->
       <section id="pomodoroSection" class="sections" style="display: none">
         <h2>Pomodoro Timer</h2>
-        <!-- Add content for the Pomodoro section -->
+        <div class="timer-container">
+          <label for="studyTime">Study Time:</label>
+          <input
+            type="number"
+            id="studyTime"
+            name="studyTime"
+            min="5"
+            max="60"
+            step="5"
+            value="25"
+          />
+        </div>
+        <div class="timer-container">
+          <label for="breakTime">Break Time:</label>
+          <input
+            type="number"
+            id="breakTime"
+            name="breakTime"
+            min="5"
+            max="60"
+            step="5"
+            value="5"
+          />
+        </div>
+        <button id="saveChangesBtn">Save Changes</button>
+        <div class="status-container">
+          <label>Status:</label>
+          <span id="statusDisplay">Inactive</span>
+        </div>
+        <button id="forceBreakBtn">Force Break</button>
       </section>
 
+      <!-- DAILY TASKS -->
       <section id="dailyTaskSection" class="sections" style="display: none">
         <h2>Daily Task</h2>
-        <!-- Add content for the Daily Task section -->
+        <div class="taskInputContainer">
+          <label for="startTaskInput">Ask for daily tasks </label>
+          <span>from</span>
+          <input type="time" id="startTaskInput" step="3600" value="08:00" />
+          <span>to</span>
+          <input type="time" id="endTaskInput" step="3600" value="10:00" />
+        </div>
+        <button id="saveDailyTaskBtn" class="taskBtn">Save Changes</button>
+        <button id="setTaskBtn" class="taskBtn">Set Task</button>
       </section>
 
+      <!-- NIGHT REVIEW -->
       <section id="nightReviewSection" class="sections" style="display: none">
         <h2>Night Review</h2>
-        <!-- Add content for the Night Review section -->
+        <div class="taskInputContainer">
+          <label for="startReviewInput">Do the night review</label>
+          <span>from</span>
+          <input type="time" id="startReviewInput" step="3600" value="20:00" />
+          <span>to</span>
+          <input type="time" id="endReviewInput" step="3600" value="22:00" />
+        </div>
+        <button id="saveNightReviewBtn" class="taskBtn">Save Changes</button>
+        <button id="startReviewBtn" class="taskBtn">Start Review</button>
       </section>
     </div>
     <script src="popup.js"></script>

@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+/* ++++++++++++++++++++++ COPING THE NOTES AND DISPLAY TEXT TO INFORM +++++++++++++++++++ */
 document
   .getElementById("notesList")
   .addEventListener("click", function (event) {
