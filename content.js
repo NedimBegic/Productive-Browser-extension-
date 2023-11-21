@@ -1,5 +1,5 @@
+/* +++++++++++++++++++ FOR NOTES +++++++++++++++++++++++++++++++ */
 let textarea;
-
 document.addEventListener("keydown", function (event) {
   // to display textarea
   if (event.ctrlKey && event.shiftKey && event.key === "X") {
@@ -25,5 +25,23 @@ document.addEventListener("keydown", function (event) {
     }
     textarea.remove();
     textarea = null;
+  }
+});
+
+/* ++++++++++++++++++++++++ FOR POMORODO +++++++++++++++++++++++++++++ */
+// content.js
+document.addEventListener("keydown", function (event) {
+  if (event.ctrlKey && event.shiftKey && event.key === "S") {
+    console.log(
+      "Content: Ctrl+Shift+S pressed. Sending message to background."
+    );
+
+    // Trigger the countdown
+    chrome.runtime.sendMessage({ action: "startCountdown" });
+
+    // Set the learning flag to true
+    chrome.storage.local.set({ learning: true }, function () {
+      console.log("Learning flag set to true");
+    });
   }
 });

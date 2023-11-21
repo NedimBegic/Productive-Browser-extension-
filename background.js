@@ -35,3 +35,17 @@ chrome.storage.local.get("notes", function (result) {
   const storedNotes = result.notes;
   console.log("Notes retrieved from chrome.storage.local:", storedNotes);
 });
+
+/* ++++++++++++++++++++++ POMORODO TIMER +++++++++++++++++++++++++++++++++ */
+
+// Function to start the countdown
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.action === "startCountdown") {
+    console.log("Background: Received message from content script");
+
+    // Set the learning flag to true
+    chrome.storage.local.set({ learning: true }, function () {
+      console.log("Learning flag set to true");
+    });
+  }
+});
