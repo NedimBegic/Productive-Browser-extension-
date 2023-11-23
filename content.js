@@ -41,6 +41,9 @@ document.addEventListener("keydown", function (event) {
       clearInterval(countdownInterval);
       countdownInterval = null;
       console.log("Learning stopped");
+
+      // Send a message to notify popup.js or other scripts about learning stopped
+      chrome.runtime.sendMessage({ action: "learningStopped" });
     }
 
     // Set remainingLearning to zero
@@ -56,6 +59,9 @@ document.addEventListener("keydown", function (event) {
   // Start learning
   if (event.ctrlKey && event.shiftKey && event.key === "S") {
     startLearning();
+
+    // Send a message to notify popup.js or other scripts about learning started
+    chrome.runtime.sendMessage({ action: "learningStarted" });
   }
 });
 
@@ -103,9 +109,17 @@ function startCountdown(remainingLearning) {
       // Optionally reset remainingLearning after the countdown
       chrome.storage.local.set({ remainingLearning: 0 }, function () {
         console.log("Remaining Learning time reset to 0");
+
+        // Send a message to notify popup.js or other scripts about learning completed
+        chrome.runtime.sendMessage({ action: "learningCompleted" });
       });
     } else {
-      console.log(remainingLearning);
+      // Send a message to notify popup.js or other scripts about remainingLearning change
+      chrome.runtime.sendMessage({
+        action: "remainingLearningChanged",
+        value: remainingLearning,
+      });
+
       remainingLearning -= 1 / 60; // Decrement by one minute
     }
   }, 1000);
