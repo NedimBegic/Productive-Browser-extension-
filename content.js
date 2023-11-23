@@ -30,18 +30,83 @@ document.addEventListener("keydown", function (event) {
 
 /* ++++++++++++++++++++++++ FOR POMORODO +++++++++++++++++++++++++++++ */
 // content.js
+
+let countdownInterval; // Variable to store the interval ID
+
 document.addEventListener("keydown", function (event) {
-  if (event.ctrlKey && event.shiftKey && event.key === "S") {
-    console.log(
-      "Content: Ctrl+Shift+S pressed. Sending message to background."
+  // Stop learning
+  if (event.ctrlKey && event.shiftKey && event.key === "E") {
+    // Clear the countdownInterval if it exists
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+      console.log("Learning stopped");
+    }
+
+    // Set remainingLearning to zero
+    chrome.storage.local.set(
+      { remainingLearning: 0, learning: false },
+      function () {
+        // Log the value after it has been updated
+        console.log("Remaining Learning time set to 0");
+      }
     );
+  }
 
-    // Trigger the countdown
-    chrome.runtime.sendMessage({ action: "startCountdown" });
-
-    // Set the learning flag to true
-    chrome.storage.local.set({ learning: true }, function () {
-      console.log("Learning flag set to true");
-    });
+  // Start learning
+  if (event.ctrlKey && event.shiftKey && event.key === "S") {
+    startLearning();
   }
 });
+
+function startLearning() {
+  // Display "Learning started" at the center of the current HTML document for 3 seconds
+  const learningMessage = document.createElement("div");
+  learningMessage.innerText = "Learning started";
+  learningMessage.style.position = "fixed";
+  learningMessage.style.top = "50%";
+  learningMessage.style.left = "50%";
+  learningMessage.style.transform = "translate(-50%, -50%)";
+  learningMessage.style.background = "#fff";
+  learningMessage.style.padding = "10px";
+  learningMessage.style.border = "1px solid #ccc";
+  learningMessage.style.borderRadius = "5px";
+  document.body.appendChild(learningMessage);
+
+  setTimeout(() => {
+    document.body.removeChild(learningMessage);
+  }, 3000);
+
+  // Set remainingLearning variable in chrome.storage.local
+  chrome.storage.local.get({ pomodoroTime: [25, 5] }, function (result) {
+    const remainingLearning = result.pomodoroTime[0];
+    chrome.storage.local.set(
+      { remainingLearning: remainingLearning, learning: true },
+      function () {
+        // Log the value after it has been updated
+        console.log("Remaining Learning time set:", remainingLearning);
+      }
+    );
+
+    // Start countdown
+    startCountdown(remainingLearning);
+  });
+}
+
+function startCountdown(remainingLearning) {
+  countdownInterval = setInterval(function () {
+    const minutes = Math.floor(remainingLearning);
+    const seconds = Math.round((remainingLearning % 1) * 60); // Round seconds
+
+    if (remainingLearning <= 0) {
+      clearInterval(countdownInterval);
+      // Optionally reset remainingLearning after the countdown
+      chrome.storage.local.set({ remainingLearning: 0 }, function () {
+        console.log("Remaining Learning time reset to 0");
+      });
+    } else {
+      console.log(remainingLearning);
+      remainingLearning -= 1 / 60; // Decrement by one minute
+    }
+  }, 1000);
+}

@@ -49,3 +49,50 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     });
   }
 });
+
+// background.js
+
+let learningCountdown;
+let countdownInterval;
+
+function startLearningCountdown(studyTime) {
+  learningCountdown = studyTime;
+  countdownInterval = setInterval(function () {
+    chrome.storage.local.set({ learningCountdown: learningCountdown });
+
+    if (learningCountdown <= 0) {
+      clearInterval(countdownInterval);
+      // Additional actions when countdown reaches zero can be added here
+    } else {
+      learningCountdown--;
+    }
+  }, 1000);
+}
+
+// Listen for Ctrl+Shift+S key combination to start the countdown
+document.addEventListener("keydown", function (event) {
+  if (event.ctrlKey && event.shiftKey && event.key === "S") {
+    console.log(
+      "Background: Ctrl+Shift+S pressed. Starting learning countdown."
+    );
+
+    // Load settings from chrome.storage.local
+    chrome.storage.local.get({ pomodoroTime: [25, 5] }, function (result) {
+      const [studyTime] = result.pomodoroTime;
+
+      // Start the learning countdown with studyTime
+      startLearningCountdown(studyTime);
+    });
+  }
+});
+
+// Listen for popup.js requesting the learningCountdown value
+chrome.runtime.onConnect.addListener(function (port) {
+  if (port.name === "popup") {
+    port.onMessage.addListener(function (msg) {
+      if (msg.action === "getLearningCountdown") {
+        port.postMessage({ learningCountdown: learningCountdown });
+      }
+    });
+  }
+});
