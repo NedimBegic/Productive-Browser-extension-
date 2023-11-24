@@ -9,3 +9,45 @@
   background-color: #f8f8f8;
   color: #333;
 }
+
+.learningStarts {
+  position: fixed;
+  top: 50%;
+  left: 50%; /* Center the div on the x-axis */
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid lightblue;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+  font-size: 4em;
+  color: lightblue;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: slideIn 2s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0.8;
+    font-size: 2em;
+    transform: translate(-50%, -50%) translateY(-5em);
+  }
+  to {
+    opacity: 1;
+    font-size: 4em;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.backgroundBlur {
+  position: fixed;
+  z-index: 555;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.5);
+}

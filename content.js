@@ -66,20 +66,15 @@ document.addEventListener("keydown", function (event) {
 });
 
 function startLearning() {
-  // Display "Learning started" at the center of the current HTML document for 3 seconds
   const learningMessage = document.createElement("div");
+  const backgroundBlur = document.createElement("div");
+  backgroundBlur.classList.add("backgroundBlur");
   learningMessage.innerText = "Learning started";
-  learningMessage.style.position = "fixed";
-  learningMessage.style.top = "50%";
-  learningMessage.style.left = "50%";
-  learningMessage.style.transform = "translate(-50%, -50%)";
-  learningMessage.style.background = "#fff";
-  learningMessage.style.padding = "10px";
-  learningMessage.style.border = "1px solid #ccc";
-  learningMessage.style.borderRadius = "5px";
+  learningMessage.classList.add("learningStarts");
+  document.body.appendChild(backgroundBlur);
   document.body.appendChild(learningMessage);
-
   setTimeout(() => {
+    document.body.removeChild(backgroundBlur);
     document.body.removeChild(learningMessage);
   }, 3000);
 
