@@ -51,3 +51,34 @@
   backdrop-filter: blur(8px);
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.learningEnds {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid red;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  font-size: 4em;
+  color: red;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: slideIn 2s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0.8;
+    font-size: 2em;
+    transform: translate(-50%, -50%) translateY(-5em);
+  }
+  to {
+    opacity: 1;
+    font-size: 4em;
+    transform: translate(-50%, -50%);
+  }
+}

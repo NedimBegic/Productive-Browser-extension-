@@ -54,6 +54,7 @@ document.addEventListener("keydown", function (event) {
         console.log("Remaining Learning time set to 0");
       }
     );
+    showLearningEndMessage();
   }
 
   // Start learning
@@ -118,4 +119,18 @@ function startCountdown(remainingLearning) {
       remainingLearning -= 1 / 60; // Decrement by one minute
     }
   }, 1000);
+}
+
+function showLearningEndMessage() {
+  const learningEndMessage = document.createElement("div");
+  const backgroundBlur = document.createElement("div");
+  backgroundBlur.classList.add("backgroundBlur");
+  learningEndMessage.innerText = "Learning ended";
+  learningEndMessage.classList.add("learningEnds");
+  document.body.appendChild(backgroundBlur);
+  document.body.appendChild(learningEndMessage);
+  setTimeout(() => {
+    document.body.removeChild(backgroundBlur);
+    document.body.removeChild(learningEndMessage);
+  }, 3000);
 }
