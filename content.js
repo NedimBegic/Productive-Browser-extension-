@@ -167,11 +167,15 @@ function startBreakCountdown(breakTime) {
   // Create a div to display the break time
   const breakTimeDisplay = document.createElement("div");
   breakTimeDisplay.innerText = `Break Time: ${breakTime} minutes`;
+  breakTimeDisplay.classList.add("breakTimeDisplay");
   countdownContainer.appendChild(breakTimeDisplay);
 
-  // Create buttons for Another Cycle and Stop Learning
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("buttonContainer");
+
   const anotherCycleButton = document.createElement("button");
   anotherCycleButton.innerText = "Another Cycle";
+  anotherCycleButton.classList.add("anotherCycleButton");
   anotherCycleButton.addEventListener("click", function () {
     // Handle Another Cycle button click
     if (countdownInterval) {
@@ -186,15 +190,17 @@ function startBreakCountdown(breakTime) {
       function () {
         console.log("Remaining Learning time set to 0");
         document.body.removeChild(countdownContainer);
+        document.body.removeChild(backgroundBlur);
         // Behave like ctrl+shift+s when Another Cycle is clicked
         startLearning();
       }
     );
   });
-  countdownContainer.appendChild(anotherCycleButton);
+  buttonContainer.appendChild(anotherCycleButton);
 
   const stopLearningButton = document.createElement("button");
   stopLearningButton.innerText = "Stop Learning";
+  stopLearningButton.classList.add("stopLearningButton");
   stopLearningButton.addEventListener("click", function () {
     // Handle Stop Learning button click
     if (countdownInterval) {
@@ -210,33 +216,57 @@ function startBreakCountdown(breakTime) {
         console.log("Remaining Learning time set to 0");
         showLearningEndMessage();
         document.body.removeChild(countdownContainer);
+        document.body.removeChild(backgroundBlur);
       }
     );
   });
-  countdownContainer.appendChild(stopLearningButton);
+  // add backgroundBlur
+  const backgroundBlur = document.createElement("div");
+  backgroundBlur.classList.add("backgroundBlur");
+  buttonContainer.appendChild(stopLearningButton);
+  countdownContainer.appendChild(buttonContainer);
 
   // Append the countdownContainer to the document body
   document.body.appendChild(countdownContainer);
+  document.body.appendChild(backgroundBlur);
+
+  // Function to format time in MM:SS format
+  function formatTime(time) {
+    const minutes = Math.floor(time);
+    const seconds = Math.round((time % 1) * 60);
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
 
   // Start the countdown
   let remainingBreakTime = breakTime;
   const breakCountdownInterval = setInterval(function () {
     // Update the break time display
-    breakTimeDisplay.innerText = `Break Time: ${remainingBreakTime} minutes`;
+    breakTimeDisplay.innerText = `Break Time: ${formatTime(
+      remainingBreakTime
+    )}`;
 
     if (remainingBreakTime <= 0) {
-      // Optionally reset remainingBreakTime after the countdown
-      clearInterval(breakCountdownInterval);
-      document.body.removeChild(countdownContainer);
-      console.log("Break time completed");
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+        console.log("Learning stopped");
+        chrome.runtime.sendMessage({ action: "learningStopped" });
+      }
 
-      // Send a message to notify other scripts about break completed
-      chrome.runtime.sendMessage({ action: "breakCompleted" });
-
-      // Behave like ctrl+shift+s when remainingBreakTime is <= 0
-      startLearning();
+      chrome.storage.local.set(
+        { remainingLearning: 0, learning: false },
+        function () {
+          console.log("Remaining Learning time set to 0");
+          document.body.removeChild(countdownContainer);
+          document.body.removeChild(backgroundBlur);
+          // Behave like ctrl+shift+s when Another Cycle is clicked
+          startLearning();
+        }
+      );
     } else {
-      remainingBreakTime -= 1 / 60; // Decrement by one minute
+      remainingBreakTime -= 1 / 60; // Decrement by one second
     }
   }, 1000);
 }
