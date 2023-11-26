@@ -13,7 +13,7 @@
 .learningStarts {
   position: fixed;
   top: 50%;
-  left: 50%; /* Center the div on the x-axis */
+  left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
   background: #fff;
@@ -91,9 +91,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  border: 2px solid #3498db; /* Blue border color */
+  border: 2px solid #3498db;
   padding: 20px;
-  border-radius: 15px; /* Rounded corners */
+  border-radius: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   text-align: center;
 }
@@ -110,7 +110,7 @@
   justify-content: space-evenly;
   margin-top: 20px;
   width: 25em !important;
-  gap: 1em; /* Increased gap between buttons */
+  gap: 1em;
 }
 
 /* Styling for the buttons */
@@ -137,20 +137,20 @@
   transform: translateX(-50%);
   text-align: center;
   padding: 15px;
-  color: #fff; /* White text color for better readability */
+  color: #fff;
   border-radius: 10px;
-  width: 70%; /* Adjust width as needed */
-  font-family: "Arial", sans-serif; /* Choose a suitable font family */
+  width: 70%;
+  font-family: "Arial", sans-serif;
 }
 
 .motivationQuote {
   font-size: 3em;
   margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Increased text shadow for better contrast */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .motivationAuthor {
   font-size: 2em;
   font-style: italic;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Increased text shadow for better contrast */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
