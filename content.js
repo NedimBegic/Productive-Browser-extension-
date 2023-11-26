@@ -163,6 +163,34 @@ function startBreakCountdown(breakTime) {
 
   const countdownContainer = document.createElement("div");
   countdownContainer.classList.add("breakCountdownContainer");
+  // add motivation quotes
+  const motivation = document.createElement("div");
+  motivation.classList.add("motivation");
+
+  const motivationQuotes = fetch("https://type.fit/api/quotes")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      // Choose a random quote from the array
+      const randomIndex = Math.floor(Math.random() * data.length);
+      const quote = data[randomIndex];
+
+      // Create elements to display the quote and author
+      const quoteElement = document.createElement("p");
+      quoteElement.textContent = `"${quote.text}"`;
+      quoteElement.classList.add("motivationQuote");
+
+      const authorElement = document.createElement("p");
+      authorElement.textContent = `- ${quote.author || "Unknown"}`;
+      authorElement.classList.add("motivationAuthor");
+
+      motivation.appendChild(quoteElement);
+      motivation.appendChild(authorElement);
+
+      // Append the motivation div to the document body
+      document.body.appendChild(motivation);
+    });
 
   // Create a div to display the break time
   const breakTimeDisplay = document.createElement("div");
@@ -191,6 +219,7 @@ function startBreakCountdown(breakTime) {
         console.log("Remaining Learning time set to 0");
         document.body.removeChild(countdownContainer);
         document.body.removeChild(backgroundBlur);
+        document.body.removeChild(motivation);
         // Behave like ctrl+shift+s when Another Cycle is clicked
         startLearning();
       }
@@ -217,6 +246,7 @@ function startBreakCountdown(breakTime) {
         showLearningEndMessage();
         document.body.removeChild(countdownContainer);
         document.body.removeChild(backgroundBlur);
+        document.body.removeChild(motivation);
       }
     );
   });
@@ -261,6 +291,7 @@ function startBreakCountdown(breakTime) {
           console.log("Remaining Learning time set to 0");
           document.body.removeChild(countdownContainer);
           document.body.removeChild(backgroundBlur);
+          document.body.removeChild(motivation);
           // Behave like ctrl+shift+s when Another Cycle is clicked
           startLearning();
         }
