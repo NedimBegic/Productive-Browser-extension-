@@ -158,7 +158,7 @@ chrome.runtime.onMessage.addListener(function (message) {
 });
 
 function startBreakCountdown(breakTime) {
-  // tel to popup.js that the break is started
+  // Tell popup.js that the break is started
   chrome.runtime.sendMessage({ action: "breakBegining", breakTime: breakTime });
 
   const countdownContainer = document.createElement("div");
@@ -169,20 +169,49 @@ function startBreakCountdown(breakTime) {
   breakTimeDisplay.innerText = `Break Time: ${breakTime} minutes`;
   countdownContainer.appendChild(breakTimeDisplay);
 
-  // Create buttons for anotherCycle and stop learning
+  // Create buttons for Another Cycle and Stop Learning
   const anotherCycleButton = document.createElement("button");
   anotherCycleButton.innerText = "Another Cycle";
   anotherCycleButton.addEventListener("click", function () {
-    // Handle anotherCycle button click
-    console.log("Another Cycle clicked");
+    // Handle Another Cycle button click
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+      console.log("Learning stopped");
+      chrome.runtime.sendMessage({ action: "learningStopped" });
+    }
+
+    chrome.storage.local.set(
+      { remainingLearning: 0, learning: false },
+      function () {
+        console.log("Remaining Learning time set to 0");
+        document.body.removeChild(countdownContainer);
+        // Behave like ctrl+shift+s when Another Cycle is clicked
+        startLearning();
+      }
+    );
   });
   countdownContainer.appendChild(anotherCycleButton);
 
   const stopLearningButton = document.createElement("button");
   stopLearningButton.innerText = "Stop Learning";
   stopLearningButton.addEventListener("click", function () {
-    // Handle stopLearning button click
-    console.log("Stop Learning clicked");
+    // Handle Stop Learning button click
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+      console.log("Learning stopped");
+      chrome.runtime.sendMessage({ action: "learningStopped" });
+    }
+
+    chrome.storage.local.set(
+      { remainingLearning: 0, learning: false },
+      function () {
+        console.log("Remaining Learning time set to 0");
+        showLearningEndMessage();
+        document.body.removeChild(countdownContainer);
+      }
+    );
   });
   countdownContainer.appendChild(stopLearningButton);
 
@@ -203,6 +232,9 @@ function startBreakCountdown(breakTime) {
 
       // Send a message to notify other scripts about break completed
       chrome.runtime.sendMessage({ action: "breakCompleted" });
+
+      // Behave like ctrl+shift+s when remainingBreakTime is <= 0
+      startLearning();
     } else {
       remainingBreakTime -= 1 / 60; // Decrement by one minute
     }
