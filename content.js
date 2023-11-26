@@ -134,3 +134,77 @@ function showLearningEndMessage() {
     document.body.removeChild(learningEndMessage);
   }, 3000);
 }
+
+chrome.runtime.onMessage.addListener(function (message) {
+  if (message.action === "forceBreak") {
+    console.log("break is started");
+    // Get break time from pomodoroTimer array in chrome.storage.local
+    chrome.storage.local.get({ pomodoroTimer: [25, 5] }, function (result) {
+      const breakTime = result.pomodoroTimer[1]; // Use the 1 index for break time
+
+      // Set remainingLearning variable to breakTime
+      chrome.storage.local.set(
+        { remainingLearning: breakTime, learning: false },
+        function () {
+          // Log the value after it has been updated
+          console.log("Remaining Learning time set to break time:", breakTime);
+          startBreakCountdown(breakTime);
+        }
+      );
+
+      // Show break started message
+    });
+  }
+});
+
+function startBreakCountdown(breakTime) {
+  // tel to popup.js that the break is started
+  chrome.runtime.sendMessage({ action: "breakBegining", breakTime: breakTime });
+
+  const countdownContainer = document.createElement("div");
+  countdownContainer.classList.add("breakCountdownContainer");
+
+  // Create a div to display the break time
+  const breakTimeDisplay = document.createElement("div");
+  breakTimeDisplay.innerText = `Break Time: ${breakTime} minutes`;
+  countdownContainer.appendChild(breakTimeDisplay);
+
+  // Create buttons for anotherCycle and stop learning
+  const anotherCycleButton = document.createElement("button");
+  anotherCycleButton.innerText = "Another Cycle";
+  anotherCycleButton.addEventListener("click", function () {
+    // Handle anotherCycle button click
+    console.log("Another Cycle clicked");
+  });
+  countdownContainer.appendChild(anotherCycleButton);
+
+  const stopLearningButton = document.createElement("button");
+  stopLearningButton.innerText = "Stop Learning";
+  stopLearningButton.addEventListener("click", function () {
+    // Handle stopLearning button click
+    console.log("Stop Learning clicked");
+  });
+  countdownContainer.appendChild(stopLearningButton);
+
+  // Append the countdownContainer to the document body
+  document.body.appendChild(countdownContainer);
+
+  // Start the countdown
+  let remainingBreakTime = breakTime;
+  const breakCountdownInterval = setInterval(function () {
+    // Update the break time display
+    breakTimeDisplay.innerText = `Break Time: ${remainingBreakTime} minutes`;
+
+    if (remainingBreakTime <= 0) {
+      // Optionally reset remainingBreakTime after the countdown
+      clearInterval(breakCountdownInterval);
+      document.body.removeChild(countdownContainer);
+      console.log("Break time completed");
+
+      // Send a message to notify other scripts about break completed
+      chrome.runtime.sendMessage({ action: "breakCompleted" });
+    } else {
+      remainingBreakTime -= 1 / 60; // Decrement by one minute
+    }
+  }, 1000);
+}

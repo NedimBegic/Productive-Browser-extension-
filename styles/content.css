@@ -82,3 +82,20 @@
     transform: translate(-50%, -50%);
   }
 }
+
+.breakCountdownContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid lightblue;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+  font-size: 16px;
+  color: lightblue;
+  overflow: hidden;
+  white-space: nowrap;
+}

@@ -59,6 +59,38 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("statusDisplay").textContent = "Inactive";
     }
   });
+
+  document
+    .getElementById("forceBreakBtn")
+    .addEventListener("click", function () {
+      // Query for the currently active tab
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        // Send a message to the content script of the active tab
+        const activeTab = tabs[0];
+        chrome.tabs.sendMessage(activeTab.id, { action: "forceBreak" });
+        console.log("Message sent to content script of the active tab");
+
+        // Get break time from pomodoroTimer array in chrome.storage.local
+        chrome.storage.local.get({ pomodoroTimer: [25, 5] }, function (result) {
+          const breakTime = result.pomodoroTimer[1]; // Use the 1 index for break time
+
+          // Set remainingLearning to break time
+          chrome.storage.local.set(
+            { remainingLearning: breakTime },
+            function () {
+              console.log(
+                "Remaining Learning time set to break time:",
+                breakTime
+              );
+              chrome.extension
+                .getBackgroundPage()
+                .chrome.extension.getViews({ type: "popup" })[0]
+                .close();
+            }
+          );
+        });
+      });
+    });
 });
 
 function updateStatusDisplay(remainingLearning) {
