@@ -304,6 +304,7 @@ function startBreakCountdown(breakTime) {
 
 /* ++++++++++++++++++ Daily tasks ++++++++++++++++++++++++++++++++ */
 function createTaskForm() {
+  console.log("this is in the function");
   // Create a div element
   const taskContainer = document.createElement("div");
   taskContainer.id = "task-container";
@@ -318,7 +319,16 @@ function createTaskForm() {
       <button id="cancel">Cancel</button>
     </div>
   `;
-
+  const backgroundBlur = document.createElement("div");
+  backgroundBlur.classList.add("backgroundBlur");
   // Append the container to the body
   document.body.appendChild(taskContainer);
+  document.body.appendChild(backgroundBlur);
 }
+// call the createTaskForm function on message from popup.js
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.message === "createTaskForm") {
+    console.log("calling tasks");
+    createTaskForm();
+  }
+});
