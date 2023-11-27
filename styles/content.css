@@ -154,3 +154,53 @@
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
+
+/* Daily tasks */
+/* style.css */
+
+#task-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #3498db; /* Blue color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
+  font-family: "Arial", sans-serif; /* Change the font family */
+  color: white; /* Text color */
+}
+
+#task-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#task-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#button-container {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #2ecc71;
+}
+
+button#save-and-add {
+  background-color: #3498db;
+}
+
+button#cancel {
+  background-color: #e74c3c;
+}

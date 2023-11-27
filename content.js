@@ -301,3 +301,24 @@ function startBreakCountdown(breakTime) {
     }
   }, 1000);
 }
+
+/* ++++++++++++++++++ Daily tasks ++++++++++++++++++++++++++++++++ */
+function createTaskForm() {
+  // Create a div element
+  const taskContainer = document.createElement("div");
+  taskContainer.id = "task-container";
+
+  // Set the inner HTML with the structure you described
+  taskContainer.innerHTML = `
+    <div id="task-header">Add today's task</div>
+    <textarea id="task-input" placeholder="Write your task here..."></textarea>
+    <div id="button-container">
+      <button id="save-and-add">Save and add another</button>
+      <button id="save">Save</button>
+      <button id="cancel">Cancel</button>
+    </div>
+  `;
+
+  // Append the container to the body
+  document.body.appendChild(taskContainer);
+}
