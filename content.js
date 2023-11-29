@@ -269,6 +269,11 @@ function startBreakCountdown(breakTime) {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
+  // close div after clicking on backgroundBlur
+  backgroundBlur.addEventListener("click", () => {
+    taskContainer.remove();
+    backgroundBlur.remove();
+  });
   // Start the countdown
   let remainingBreakTime = breakTime;
   const breakCountdownInterval = setInterval(function () {
@@ -304,7 +309,6 @@ function startBreakCountdown(breakTime) {
 
 /* ++++++++++++++++++ Daily tasks ++++++++++++++++++++++++++++++++ */
 function createTaskForm() {
-  console.log("this is in the function");
   // Create a div element
   const taskContainer = document.createElement("div");
   taskContainer.id = "task-container";
@@ -315,7 +319,7 @@ function createTaskForm() {
     <textarea id="task-input" placeholder="Write your task here..."></textarea>
     <div id="button-container">
       <button id="save-and-add">Save and add another</button>
-      <button id="save">Save</button>
+      <button id="save">Save and close</button>
       <button id="cancel">Cancel</button>
     </div>
   `;
@@ -324,11 +328,80 @@ function createTaskForm() {
   // Append the container to the body
   document.body.appendChild(taskContainer);
   document.body.appendChild(backgroundBlur);
+
+  // functnion for saving and opening the div again
+  function saveTaskAndOpenNew() {
+    const taskInput = taskContainer.querySelector("#task-input").value.trim();
+
+    if (taskInput !== "") {
+      chrome.storage.local.get({ dailyTasks: [] }, function (result) {
+        const dailyTasks = result.dailyTasks;
+        dailyTasks.push(taskInput);
+        chrome.storage.local.set({ dailyTasks: dailyTasks }, function () {
+          console.log("Task saved successfully!");
+          alert("Task saved successfully!");
+          // Open a new task container
+          createTaskForm();
+        });
+      });
+    } else {
+      alert("Please enter a task before saving.");
+    }
+  }
+
+  // close div after clicking on backgroundBlur
+  backgroundBlur.addEventListener("click", () => {
+    taskContainer.remove();
+    backgroundBlur.remove();
+  });
+  // Add event listener to the "Cancel" button
+  const cancelButton = taskContainer.querySelector("#cancel");
+  cancelButton.addEventListener("click", () => {
+    taskContainer.remove();
+    backgroundBlur.remove();
+  });
+  // Add event listener to the "Save and add another" button
+  const saveAndAddButton = taskContainer.querySelector("#save-and-add");
+  saveAndAddButton.addEventListener("click", saveTaskAndOpenNew);
+
+  // Add event listener to the "Save" button
+  const saveButton = taskContainer.querySelector("#save");
+  saveButton.addEventListener("click", () => {
+    const taskInput = taskContainer.querySelector("#task-input").value.trim();
+
+    if (taskInput !== "") {
+      chrome.storage.local.get({ dailyTasks: [] }, function (result) {
+        const dailyTasks = result.dailyTasks;
+        dailyTasks.push(taskInput);
+
+        // Save the updated array back to chrome.storage.local
+        chrome.storage.local.set({ dailyTasks: dailyTasks }, function () {
+          alert("Task saved successfully!");
+        });
+
+        // Remove the task container and background blur
+        taskContainer.remove();
+        backgroundBlur.remove();
+      });
+    } else {
+      alert("Please enter a task before saving.");
+    }
+  });
 }
-// call the createTaskForm function on message from popup.js
+
+// open Create Task if the browser is opened between start and end
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  // Handle messages here
+  if (message.action === "renderDaily") {
+    // Call your function to render the daily task form
+    console.log("from background");
+    createTaskForm();
+  }
+});
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.message === "createTaskForm") {
-    console.log("calling tasks");
+  if (request.message === "openDaily") {
+    // Call the createTaskForm function when receiving the "openDaily" message
     createTaskForm();
   }
 });

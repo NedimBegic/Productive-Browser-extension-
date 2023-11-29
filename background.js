@@ -96,3 +96,91 @@ chrome.runtime.onConnect.addListener(function (port) {
     });
   }
 });
+
+/* ++++++++++++++ Daily Task +++++++++++++++++++++++++++++ */
+
+// updating start and end
+// Declare a variable to store data
+var sharedData = {};
+
+// Listen for messages from content scripts or other parts of the extension
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  // Handle messages here
+  if (message.action === "updateTimeDaily") {
+    // Update shared data based on the updated time settings
+    sharedData.startTaskTime = message.start;
+    sharedData.endTaskTime = message.end;
+
+    // Update chrome.storage.local with the new values
+    chrome.storage.local.set(
+      {
+        rangeDaily: {
+          start: sharedData.startTaskTime,
+          end: sharedData.endTaskTime,
+        },
+      },
+      function () {
+        console.log("Daily task range updated in storage.");
+      }
+    );
+
+    // Optionally, trigger any other actions based on the updated time settings
+    checkAndRenderDailyContent();
+  }
+});
+
+// Listen for the extension being started
+chrome.runtime.onStartup.addListener(function () {
+  updateSharedDataAndRenderContent();
+});
+
+// Function to update shared data based on time settings and render content
+function updateSharedDataAndRenderContent() {
+  updateSharedData(function () {
+    checkAndRenderDailyContent();
+  });
+}
+
+// Function to update shared data based on time settings
+function updateSharedData(callback) {
+  chrome.storage.local.get(["rangeDaily", "openedDaily"], function (result) {
+    var startTaskTime = result.rangeDaily?.start || "08:00";
+    var endTaskTime = result.rangeDaily?.end || "10:00";
+    var openedDaily = result.openedDaily || false;
+
+    // Set the shared data with the updated time settings
+    sharedData.startTaskTime = startTaskTime;
+    sharedData.endTaskTime = endTaskTime;
+    sharedData.openedDaily = openedDaily;
+
+    // Call the callback function to signal that updateSharedData has completed
+    if (typeof callback === "function") {
+      callback();
+    }
+  });
+}
+
+// Function to check the current time and render content if within the specified range
+function checkAndRenderDailyContent() {
+  var currentTime = new Date();
+  var currentHours = currentTime.getHours();
+
+  // Check if the current time is within the specified range and openedDaily is false
+  if (
+    currentHours >= sharedData.startTaskTime &&
+    currentHours < sharedData.endTaskTime &&
+    !sharedData.openedDaily
+  ) {
+    sendMessageToContentScripts({ action: "renderDaily" });
+
+    // Update openedDaily to true to indicate that the extension has been opened today
+    chrome.storage.local.set({ openedDaily: true });
+  }
+}
+
+// Function to send a message to content scripts
+function sendMessageToContentScripts(message) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, message);
+  });
+}

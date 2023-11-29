@@ -104,7 +104,6 @@
   margin-bottom: 20px;
 }
 
-/* Styling for the button container */
 .buttonContainer {
   display: flex;
   justify-content: space-evenly;
@@ -113,7 +112,6 @@
   gap: 1em;
 }
 
-/* Styling for the buttons */
 .buttonContainer button {
   padding: 12px 17px;
   font-size: 18px;
@@ -176,13 +174,26 @@
   box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0); /* Initial scale set to 0 */
   border-radius: 20px;
   width: 25em;
   z-index: 9999;
+  opacity: 0; /* Initial opacity set to 0 */
+  animation: fadeInUp 0.5s ease-out forwards; /* Animation */
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
 }
 
 #task-header {
