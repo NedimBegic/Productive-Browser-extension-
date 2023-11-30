@@ -184,3 +184,6 @@ function sendMessageToContentScripts(message) {
     chrome.tabs.sendMessage(tabs[0].id, message);
   });
 }
+
+// for practice
+// background

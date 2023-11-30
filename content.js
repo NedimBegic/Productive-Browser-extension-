@@ -405,3 +405,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     createTaskForm();
   }
 });
+
+// content.js
+
+// This event is triggered when a message is received from the background script
+document.addEventListener("DOMContentLoaded", function () {
+  // Your function to be executed when the browser is opened
+  createTaskForm();
+  console.log("he");
+});
