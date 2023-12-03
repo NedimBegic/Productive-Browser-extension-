@@ -329,26 +329,26 @@
   text-align: center;
 }
 
-ul {
+.reflection-container ul {
   list-style: none;
   padding: 0;
   text-align: left; /* Align the list to the left */
 }
 
-ul li {
-  margin-bottom: 10px; /* Add spacing between list items */
-  padding-left: 20px; /* Add padding to the left of list items */
+.reflection-container ul li {
+  margin-bottom: 10px;
+  padding-left: 20px;
   position: relative;
 }
 
-ul li::before {
-  content: "\2022"; /* Unicode character for bullet point */
+.reflection-container ul li::before {
+  content: "\2022";
   position: absolute;
   left: 0;
-  color: #3498db; /* Color of the bullet point */
+  color: #3498db;
 }
 
-textarea {
+.reflection-container textarea {
   width: 90%;
   height: 10em;
   margin: 10px 0;
@@ -361,22 +361,22 @@ textarea {
 }
 
 .reflection-container button {
-  padding: 20px; /* Increased padding */
+  padding: 20px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   color: #fff;
-  background-color: #3498db; /* Blue background color */
+  background-color: #3498db;
   transition: background-color 0.3s, transform 0.3s;
-  font-size: 1.2em; /* Increased font size */
+  font-size: 1.2em;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .reflection-container button:hover {
-  background-color: #2962a8; /* Darker blue on hover */
+  background-color: #2962a8;
 }
 
-span {
-  color: #e74c3c; /* A slightly darker red */
+.reflection-container span {
+  color: #e74c3c;
   font-weight: bold;
 }
