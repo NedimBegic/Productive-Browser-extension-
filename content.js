@@ -397,78 +397,91 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 /* ++++++++++++ Night Review +++++++++++++++++++ */
 
-function renderDailyTasks(dailyTasks) {
+function renderContent(task, container) {
+  // Get the existing ul element
+  const ul = container.querySelector(".content-list");
+
+  // Clear existing content
+  ul.innerHTML = "";
+
+  // Create an li element for the specific task
+  const li = document.createElement("li");
+  li.textContent = task;
+  ul.appendChild(li);
+}
+
+function renderNightReviewContainer(dailyTasks) {
   if (dailyTasks.length > 0) {
     // Create background blur
     const backgroundBlur = document.createElement("div");
     backgroundBlur.classList.add("background-div");
 
     // Create a container div
-    const container = document.createElement("div");
-    container.classList.add("night-review-container");
+    const nightReviewContainer = document.createElement("div");
+    nightReviewContainer.classList.add("night-review-container");
 
     // Create an h2 element
     const h2 = document.createElement("h2");
     h2.textContent = "Did you do your daily task?";
-    container.appendChild(h2);
+    nightReviewContainer.appendChild(h2);
 
     // Create a ul element
     const ul = document.createElement("ul");
-    container.appendChild(ul);
+    ul.classList.add("content-list");
+    nightReviewContainer.appendChild(ul);
 
     // Create a div for buttons
     const buttonDiv = document.createElement("div");
     buttonDiv.classList.add("button-container");
-    container.appendChild(buttonDiv);
+    nightReviewContainer.appendChild(buttonDiv);
+
+    // Track the number of skipped tasks
+    let skippedTasksCount = 0;
 
     // Append the container and background blur to the document body
     document.body.appendChild(backgroundBlur);
-    document.body.appendChild(container);
+    document.body.appendChild(nightReviewContainer);
 
-    function displayTask(index) {
-      // Clear existing content
-      ul.innerHTML = "";
+    // Initial display of the first task
+    renderContent(dailyTasks[0], nightReviewContainer);
 
-      // Populate the ul with li element for the specific task
-      const li = document.createElement("li");
-      li.textContent = dailyTasks[index];
-      ul.appendChild(li);
-
-      // Create a "Yes" button
-      const yesButton = document.createElement("button");
-      yesButton.textContent = "Yes";
-      yesButton.addEventListener("click", function () {
-        // Remove the current task from chrome.storage.local
-        dailyTasks.splice(index, 1);
-        chrome.storage.local.set({ dailyTasks: dailyTasks }, function () {
-          // Check if there are more tasks to display
-          if (index + 1 < dailyTasks.length) {
-            displayTask(index + 1);
-          } else {
-            container.remove();
-            backgroundBlur.remove();
-          }
-        });
-      });
-      buttonDiv.appendChild(yesButton);
-
-      // Create a "Set for Tomorrow" button
-      const setForTomorrowButton = document.createElement("button");
-      setForTomorrowButton.textContent = "Set for Tomorrow";
-      setForTomorrowButton.addEventListener("click", function () {
+    // Add event listener to the "Yes" button
+    const yesButton = document.createElement("button");
+    yesButton.textContent = "Yes";
+    yesButton.addEventListener("click", function () {
+      // Remove the current task from chrome.storage.local
+      dailyTasks.shift(); // Remove the first element
+      chrome.storage.local.set({ dailyTasks: dailyTasks }, function () {
         // Check if there are more tasks to display
-        if (index + 1 < dailyTasks.length) {
-          displayTask(index + 1);
+        if (dailyTasks.length > 0) {
+          renderContent(dailyTasks[0], nightReviewContainer);
         } else {
-          container.remove();
+          // No more tasks, remove the container and background blur
+          nightReviewContainer.remove();
           backgroundBlur.remove();
         }
       });
-      buttonDiv.appendChild(setForTomorrowButton);
-    }
+    });
+    buttonDiv.appendChild(yesButton);
 
-    // Initial display of the first task
-    displayTask(0);
+    // Add event listener to the "Set for Tomorrow" button
+    const setForTomorrowButton = document.createElement("button");
+    setForTomorrowButton.textContent = "Set for Tomorrow";
+    setForTomorrowButton.addEventListener("click", function () {
+      // Increment the skipped tasks count
+      skippedTasksCount++;
+
+      // Check if there are more tasks to display
+      if (dailyTasks.length > skippedTasksCount) {
+        // Skip to the next task
+        renderContent(dailyTasks[skippedTasksCount], nightReviewContainer);
+      } else {
+        // No more tasks, remove the container and background blur
+        nightReviewContainer.remove();
+        backgroundBlur.remove();
+      }
+    });
+    buttonDiv.appendChild(setForTomorrowButton);
   }
 }
 
@@ -477,8 +490,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // Retrieve the dailyTasks array from chrome.storage.local
     chrome.storage.local.get({ dailyTasks: [] }, function (result) {
       const dailyTasks = result.dailyTasks;
-      // Call the renderDailyTasks function with the retrieved dailyTasks array
-      renderDailyTasks(dailyTasks);
+      // Call the renderNightReviewContainer function with the retrieved dailyTasks array
+      renderNightReviewContainer(dailyTasks);
     });
   }
 });
