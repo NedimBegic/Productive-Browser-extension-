@@ -340,6 +340,11 @@ function createTaskForm() {
         chrome.storage.local.set({ dailyTasks: dailyTasks }, function () {
           console.log("Task saved successfully!");
           alert("Task saved successfully!");
+
+          // Remove the current task container and background blur
+          taskContainer.remove();
+          backgroundBlur.remove();
+
           // Open a new task container
           createTaskForm();
         });
