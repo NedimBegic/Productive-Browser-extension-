@@ -411,78 +411,136 @@ function renderContent(task, container) {
 }
 
 function renderNightReviewContainer(dailyTasks) {
-  if (dailyTasks.length > 0) {
-    // Create background blur
-    const backgroundBlur = document.createElement("div");
-    backgroundBlur.classList.add("background-div");
+  return new Promise((resolve) => {
+    if (dailyTasks.length > 0) {
+      // Create background blur
+      const backgroundBlur = document.createElement("div");
+      backgroundBlur.classList.add("background-div");
 
-    // Create a container div
-    const nightReviewContainer = document.createElement("div");
-    nightReviewContainer.classList.add("night-review-container");
+      // Create a container div
+      const nightReviewContainer = document.createElement("div");
+      nightReviewContainer.classList.add("night-review-container");
 
-    // Create an h2 element
-    const h2 = document.createElement("h2");
-    h2.textContent = "Did you do your daily task?";
-    nightReviewContainer.appendChild(h2);
+      // Create an h2 element
+      const h2 = document.createElement("h2");
+      h2.textContent = "Did you do your daily task?";
+      nightReviewContainer.appendChild(h2);
 
-    // Create a ul element
-    const ul = document.createElement("ul");
-    ul.classList.add("content-list");
-    nightReviewContainer.appendChild(ul);
+      // Create a ul element
+      const ul = document.createElement("ul");
+      ul.classList.add("content-list");
+      nightReviewContainer.appendChild(ul);
 
-    // Create a div for buttons
-    const buttonDiv = document.createElement("div");
-    buttonDiv.classList.add("button-container");
-    nightReviewContainer.appendChild(buttonDiv);
+      // Create a div for buttons
+      const buttonDiv = document.createElement("div");
+      buttonDiv.classList.add("button-container");
+      nightReviewContainer.appendChild(buttonDiv);
 
-    // Track the number of skipped tasks
-    let skippedTasksCount = 0;
+      // Track the number of skipped tasks
+      let skippedTasksCount = 0;
 
-    // Append the container and background blur to the document body
-    document.body.appendChild(backgroundBlur);
-    document.body.appendChild(nightReviewContainer);
+      // Append the container and background blur to the document body
+      document.body.appendChild(backgroundBlur);
+      document.body.appendChild(nightReviewContainer);
 
-    // Initial display of the first task
-    renderContent(dailyTasks[0], nightReviewContainer);
+      // Initial display of the first task
+      renderContent(dailyTasks[0], nightReviewContainer);
 
-    // Add event listener to the "Yes" button
-    const yesButton = document.createElement("button");
-    yesButton.textContent = "Yes";
-    yesButton.addEventListener("click", function () {
-      // Remove the current task from chrome.storage.local
-      dailyTasks.shift(); // Remove the first element
-      chrome.storage.local.set({ dailyTasks: dailyTasks }, function () {
+      // Add event listener to the "Yes" button
+      const yesButton = document.createElement("button");
+      yesButton.textContent = "Yes";
+      yesButton.addEventListener("click", function () {
+        // Remove the current task from chrome.storage.local
+        dailyTasks.shift(); // Remove the first element
+        chrome.storage.local.set({ dailyTasks: dailyTasks }, function () {
+          // Check if there are more tasks to display
+          if (dailyTasks.length > 0) {
+            renderContent(dailyTasks[0], nightReviewContainer);
+          } else {
+            // No more tasks, remove the container and background blur
+            nightReviewContainer.remove();
+            backgroundBlur.remove();
+            resolve(); // Resolve the promise when rendering is done
+          }
+        });
+      });
+      buttonDiv.appendChild(yesButton);
+
+      // Add event listener to the "Set for Tomorrow" button
+      const setForTomorrowButton = document.createElement("button");
+      setForTomorrowButton.textContent = "Set for Tomorrow";
+      setForTomorrowButton.addEventListener("click", function () {
+        // Increment the skipped tasks count
+        skippedTasksCount++;
+
         // Check if there are more tasks to display
-        if (dailyTasks.length > 0) {
-          renderContent(dailyTasks[0], nightReviewContainer);
+        if (dailyTasks.length > skippedTasksCount) {
+          // Skip to the next task
+          renderContent(dailyTasks[skippedTasksCount], nightReviewContainer);
         } else {
           // No more tasks, remove the container and background blur
           nightReviewContainer.remove();
           backgroundBlur.remove();
+          resolve(); // Resolve the promise when rendering is done
         }
       });
-    });
-    buttonDiv.appendChild(yesButton);
+      buttonDiv.appendChild(setForTomorrowButton);
+    } else {
+      resolve(); // Resolve the promise immediately if there are no tasks
+    }
+  });
+}
 
-    // Add event listener to the "Set for Tomorrow" button
-    const setForTomorrowButton = document.createElement("button");
-    setForTomorrowButton.textContent = "Set for Tomorrow";
-    setForTomorrowButton.addEventListener("click", function () {
-      // Increment the skipped tasks count
-      skippedTasksCount++;
+function reflectToDay() {
+  // Create background blur
+  const backgroundBlur = document.createElement("div");
+  backgroundBlur.classList.add("background-div");
 
-      // Check if there are more tasks to display
-      if (dailyTasks.length > skippedTasksCount) {
-        // Skip to the next task
-        renderContent(dailyTasks[skippedTasksCount], nightReviewContainer);
-      } else {
-        // No more tasks, remove the container and background blur
-        nightReviewContainer.remove();
-        backgroundBlur.remove();
-      }
-    });
-    buttonDiv.appendChild(setForTomorrowButton);
-  }
+  // Create a container div
+  const reflectionContainer = document.createElement("div");
+  reflectionContainer.classList.add("reflection-container");
+
+  // Create an h2 element
+  const h2 = document.createElement("h2");
+  h2.textContent = "Reflect to the Day";
+  reflectionContainer.appendChild(h2);
+
+  // Create a div for content
+  const contentDiv = document.createElement("div");
+  contentDiv.classList.add("content-div");
+
+  // Create a list for reasons
+  const reasonsList = document.createElement("ul");
+  reasonsList.innerHTML =
+    "<li>A night review provides an opportunity for self-reflection on the events and experiences of the day.</li><li>It allows you to analyze your actions, decisions, and emotions, fostering a deeper understanding of yourself.</li><li>By developing self-awareness, you can identify patterns, strengths, and areas for improvement.</li>";
+  contentDiv.appendChild(reasonsList);
+
+  // Create a span
+  const noteSpan = document.createElement("span");
+  noteSpan.textContent =
+    "Note: You can think about your day or write it down for better cognitive effort.";
+  contentDiv.appendChild(noteSpan);
+
+  // Create a textarea
+  const textarea = document.createElement("textarea");
+  contentDiv.appendChild(textarea);
+
+  // Create a button
+  const doneButton = document.createElement("button");
+  doneButton.textContent = "I am done";
+  doneButton.addEventListener("click", function () {
+    // Remove the reflection container and background blur
+    reflectionContainer.remove();
+    backgroundBlur.remove();
+  });
+  contentDiv.appendChild(doneButton);
+
+  // Append the content div to the reflection container
+  reflectionContainer.appendChild(contentDiv);
+
+  // Append the container and background blur to the document body
+  document.body.appendChild(backgroundBlur);
+  document.body.appendChild(reflectionContainer);
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -491,7 +549,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.storage.local.get({ dailyTasks: [] }, function (result) {
       const dailyTasks = result.dailyTasks;
       // Call the renderNightReviewContainer function with the retrieved dailyTasks array
-      renderNightReviewContainer(dailyTasks);
+      renderNightReviewContainer(dailyTasks)
+        .then(() => {
+          // Rendering is complete, call reflectToDay
+          reflectToDay();
+        })
+        .catch((error) => {
+          console.error("Error rendering night review:", error);
+        });
     });
   }
 });
