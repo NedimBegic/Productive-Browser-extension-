@@ -13,37 +13,8 @@ function closePopup() {
     .close();
 }
 
-// Function to save daily task range to chrome.storage.local
-function saveDailyTaskRange() {
-  const startTaskTime = document.getElementById("startTaskInput").value;
-  const endTaskTime = document.getElementById("endTaskInput").value;
-
-  // Save the time range to local storage
-  chrome.storage.local.set(
-    { rangeDaily: { start: startTaskTime, end: endTaskTime } },
-    function () {
-      console.log("Daily task range saved successfully!");
-      alert("Daily task range saved successfully!");
-
-      // Send a message to the background script to update time settings
-      chrome.runtime.sendMessage({
-        action: "updateTimeDaily",
-        start: startTaskTime,
-        end: endTaskTime,
-      });
-    }
-  );
-}
-
 // Event listener for the "Set Task" button
 document.getElementById("setTaskBtn").addEventListener("click", function () {
   openTaskForm();
   closePopup();
 });
-
-// Event listener for the "Save Daily Task" button
-document
-  .getElementById("saveDailyTaskBtn")
-  .addEventListener("click", function () {
-    saveDailyTaskRange();
-  });

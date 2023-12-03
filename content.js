@@ -389,28 +389,8 @@ function createTaskForm() {
   });
 }
 
-// open Create Task if the browser is opened between start and end
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  // Handle messages here
-  if (message.action === "renderDaily") {
-    // Call your function to render the daily task form
-    console.log("from background");
-    createTaskForm();
-  }
-});
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message === "openDaily") {
-    // Call the createTaskForm function when receiving the "openDaily" message
     createTaskForm();
   }
-});
-
-// content.js
-
-// This event is triggered when a message is received from the background script
-document.addEventListener("DOMContentLoaded", function () {
-  // Your function to be executed when the browser is opened
-  createTaskForm();
-  console.log("he");
 });
