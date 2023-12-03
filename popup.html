@@ -83,14 +83,20 @@
       <!-- NIGHT REVIEW -->
       <section id="nightReviewSection" class="sections" style="display: none">
         <h2>Night Review</h2>
-        <div class="taskInputContainer">
-          <label for="startReviewInput">Do the night review</label>
-          <span>from</span>
-          <input type="time" id="startReviewInput" step="3600" value="20:00" />
-          <span>to</span>
-          <input type="time" id="endReviewInput" step="3600" value="22:00" />
-        </div>
-        <button id="saveNightReviewBtn" class="taskBtn">Save Changes</button>
+        <p>Having a night review is crucial because:</p>
+        <ul>
+          <li>
+            Reflect on the day's achievements and challenges for personal
+            growth.
+          </li>
+          <li>
+            Identify areas for improvement and set goals for the next day.
+          </li>
+          <li>
+            Improve sleep quality by clearing your mind and reducing stress
+            before bedtime.
+          </li>
+        </ul>
         <button id="startReviewBtn" class="taskBtn">Start Review</button>
       </section>
     </div>
@@ -98,5 +104,6 @@
     <script src="/modules/notes.js"></script>
     <script src="/modules/pomorodo.js"></script>
     <script src="/modules/dailyTask.js"></script>
+    <script src="/modules/nightReview.js"></script>
   </body>
 </html>
