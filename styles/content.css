@@ -15,7 +15,7 @@
 }
 
 .textarea-container:focus-within {
-  outline: 2px solid #3498db; /* Blue outline on focus */
+  outline: 2px solid #3498db;
 }
 
 .learningStarts {

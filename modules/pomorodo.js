@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!result.learning) {
         document.getElementById("statusDisplay").textContent = "Inactive";
+        document.getElementById("statusDisplay").style.color = "#c4424e";
       } else {
         // Update statusDisplay every second
         setInterval(updateStatusDisplay, 1000);
@@ -112,6 +113,7 @@ function updateStatusDisplay(remainingLearning) {
 
     // Update the content of the statusDisplay element
     const statusDisplay = document.getElementById("statusDisplay");
+    statusDisplay.style.color = "#3498db";
     statusDisplay.textContent = formattedTime;
   } else {
     console.log("Invalid remainingLearning value:", remainingLearning);
