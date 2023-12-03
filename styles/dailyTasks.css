@@ -44,12 +44,12 @@ label {
   transform: translateY(0.3em);
 }
 
-ul {
+#dailyTaskSection ul {
   list-style-type: none;
   padding: 0;
 }
 
-li {
+#dailyTaskSection li {
   margin: 8px 0;
   padding: 8px;
   background-color: #ecf0f1;
@@ -57,7 +57,7 @@ li {
   font-family: "Arial", sans-serif;
 }
 
-li::before {
+#dailyTaskSection li::before {
   content: "\2022";
   color: #3498db;
   font-size: 1.5em;

@@ -5,9 +5,17 @@
   z-index: 9999;
   padding: 10px;
   border-radius: 8px;
-  border: 2px solid #ccc;
+  border: 2px solid #3498db;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #f8f8f8;
   color: #333;
+  font-family: "Arial", sans-serif;
+  transition: border-color 0.3s ease;
+  font-size: 1.3em;
+}
+
+.textarea-container:focus-within {
+  outline: 2px solid #3498db; /* Blue outline on focus */
 }
 
 .learningStarts {
