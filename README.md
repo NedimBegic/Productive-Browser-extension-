@@ -11,6 +11,7 @@
     <p><strong>Explanation and Instructions:</strong> The Pomodoro learning technique involves focused study sessions followed by short breaks. Adjust the learning time and break duration in the popup. Start learning with <code>Ctrl+Shift+S</code> and end with <code>Ctrl+Shift+E</code>. Wait for the break or force it using the "Force Break" button in the popup.</p>
   <img src="https://i.ibb.co/vJMT41w/pomorodo.png"/>
   <p>The break has a motivational quote from an API, timer and two buttons to start next learning cycle or stop learning phase</p>
+  <spam>Motivational API: <a href="https://forum.freecodecamp.org/t/free-api-inspirational-quotes-json-with-code-examples/311373">link</a></spam>
   <img src="https://i.ibb.co/yntnYCk/pause.png"/>
   <h3>Daily Task</h3>
     <p><strong>Explanation and Instructions:</strong> Daily tasks are crucial for productivity. Click the "Set Task" button in the popup to remember your task.</p>
