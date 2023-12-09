@@ -1,6 +1,7 @@
  <h1>Productive Browser - CS50 Final Project</h1>
-
   <p>This JavaScript extension is the final project for the Computer Science Introduction course at Harvard University (CS50). It aims to enhance productivity through four key functionalities: taking notes, Pomodoro learning, daily tasks, and night review.</p>
+   <span>Watch a</span><a href="https://www.youtube.com/watch?v=01PiYmBNUJc&t=29s&ab_channel=NedimBegic">youtube presentation</a>
+
   <img src="https://i.ibb.co/nnqhTdH/extension.png" />
   <h2>Functionalities:</h2>
 
